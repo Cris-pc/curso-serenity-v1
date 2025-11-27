@@ -1,2 +1,3 @@
-Java - Selenium - Maven - TestNG 03/2025
-Testing de Performance 09-2025.
+Es el mismo proyecto pero utilizando diferentes gestores de dependencias
+gradle 
+maven
