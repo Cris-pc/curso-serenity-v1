@@ -12,3 +12,6 @@ $ mvn clean verify -Ddriver=firefox
 ```json
 $ gradlew clean test -Pdriver=firefox
 ```
+/////input[@id='wpforms-2350-field_0'] crear xpath
+/// input[id=name] ---- input#name css selector
+/// input.form-control
