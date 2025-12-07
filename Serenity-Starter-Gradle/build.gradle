@@ -1,33 +1,49 @@
-plugins {
-    id 'java'
-    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.1'
-}
+defaultTasks 'clean', 'test', 'aggregate'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:4.1.14"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: "net.serenity-bdd.serenity-gradle-plugin"
+
+sourceCompatibility = 21
+targetCompatibility = 21
 
 ext {
-    serenity_version = '4.2.1'
+    SERENITY_VERSION = '4.1.14'
 }
 
 dependencies {
-    testImplementation "net.serenity-bdd:serenity-core:${serenity_version}"
-    testImplementation "net.serenity-bdd:serenity-junit:${serenity_version}"
-    testImplementation "net.serenity-bdd:serenity-cucumber:${serenity_version}"
-    testImplementation "net.serenity-bdd:serenity-screenplay:${serenity_version}"
-    testImplementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenity_version}"
+    // SERENITY
+    implementation "net.serenity-bdd:serenity-core:${SERENITY_VERSION}"
+    implementation "net.serenity-bdd:serenity-junit:${SERENITY_VERSION}"
+    implementation "net.serenity-bdd:serenity-screenplay:${SERENITY_VERSION}"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:${SERENITY_VERSION}"
+    implementation "net.serenity-bdd:serenity-cucumber:${SERENITY_VERSION}"
+
+    // JUNIT 4 (REQUIRED)
+    testImplementation "junit:junit:4.13.2"
+
+    // CUCUMBER
+    testImplementation "io.cucumber:cucumber-java:7.15.0"
+    testImplementation "io.cucumber:cucumber-junit:7.15.0"
 }
 
 test {
-    useJUnit()
+    systemProperty "file.encoding", "UTF-8"
 }
 
 test.finalizedBy(aggregate)
-
-serenity {
-    outputDirectory = "build/serenity-reports"
-}

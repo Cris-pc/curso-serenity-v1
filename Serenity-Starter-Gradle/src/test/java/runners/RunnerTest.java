@@ -8,6 +8,6 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "stepsdefinitions",
-        snippets = CucumberOptions.SnippetType.CAMELCASE
+        plugin = {"pretty"}
 )
-public class RunnerTest {}
+public class RunnerTest { }
