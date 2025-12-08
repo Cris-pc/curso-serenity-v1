@@ -9,10 +9,12 @@ public class LoginErrorMessage implements Question<String> {
 
     @Override
     public String answeredBy(Actor actor) {
+
         return Text.of(sauceDemoPage.LBL_LOGINFAIL).answeredBy(actor);
     }
 
     public static LoginErrorMessage value() {
+
         return new LoginErrorMessage();
     }
 }

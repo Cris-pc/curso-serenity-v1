@@ -20,6 +20,7 @@ public class Login implements Task {
     }
 
     public static Login satisfactorio(String user, String pass) {
+
         return Tasks.instrumented(Login.class, user, pass);
     }
 
@@ -31,10 +32,6 @@ public class Login implements Task {
                 Click.on(sauceDemoPage.BTN_INGRESAR)
         );
         // Pausa manual de 5 segundos
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        try { Thread.sleep(5000);} catch (InterruptedException e) { throw new RuntimeException(e); }
     }
 }
