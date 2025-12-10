@@ -5,6 +5,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.annotations.Managed;
+import net.serenitybdd.core.Serenity;
+import net.serenitybdd.model.environment.EnvironmentSpecificConfiguration;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Enter;
@@ -12,10 +14,12 @@ import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.waits.WaitUntil;
+import net.thucydides.model.util.EnvironmentVariables;
 import org.openqa.selenium.WebDriver;
 import questions.IsLblVisible;
 import questions.IsMenuVisible;
 import questions.LoginErrorMessage;
+import tasks.Login;
 import tasks.LoginFail;
 import tasks.ProcesoCompra;
 import userinterface.sauceDemoPage;
@@ -32,20 +36,21 @@ public class FormularioTest3ProceCompra {
 
     @Before
     public void setup() {
-        browser.get("about:blank");
         OnStage.setTheStage(Cast.ofStandardActors());
         OnStage.theActorCalled("Cris").can(BrowseTheWeb.with(browser));
         browser.manage().window().maximize();
     }
 
+
+
     @Given("Cris ingresa {string} y {string} y accede a la pagina")
     public void cris_ingresa_y_y_accede_a_la_pagina(String user, String pass) {
+        EnvironmentVariables environmentVariables = Serenity.environmentVariables(); /*Serenity.environmentVariables() es un helper de Serenity que devuelve el objeto con todas las variables de configuración cargadas en tiempo de ejecución.*/
+        String baseUrl = EnvironmentSpecificConfiguration.from(environmentVariables) /*estas dos líneas obtienen en tiempo de ejecución la URL base configurada en tu proyecto (sin hardcodearla en el código).*/
+                .getProperty("base.url");
         OnStage.theActorInTheSpotlight().attemptsTo(
-                Open.url("https://www.saucedemo.com"),
-                WaitUntil.the(sauceDemoPage.TXT_USER, isVisible()).forNoMoreThan(5).seconds(),
-                Enter.theValue(user).into(sauceDemoPage.TXT_USER),
-                Enter.theValue(pass).into(sauceDemoPage.TXT_PASS),
-                Click.on(sauceDemoPage.BTN_INGRESAR)
+                Open.url(baseUrl),
+                Login.satisfactorio(user,pass)
         );
 
     }

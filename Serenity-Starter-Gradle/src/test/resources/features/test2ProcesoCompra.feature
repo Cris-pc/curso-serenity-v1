@@ -7,5 +7,3 @@ Feature: Formulario validacion proceso compra
     Examples:
       | usuario       | contrasena   |
       | standard_user | secret_sauce |
-
-
