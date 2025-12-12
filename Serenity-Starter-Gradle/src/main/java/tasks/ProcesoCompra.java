@@ -7,20 +7,25 @@ import net.serenitybdd.screenplay.actions.Click;
 import userinterface.sauceDemoPageHome;
 import net.serenitybdd.screenplay.questions.Text;
 
-
-
-
-
 public class ProcesoCompra implements Task {
 
 
-    public ProcesoCompra() {
+    public ProcesoCompra() { /*Constructor necesario para que Serenity pueda instanciar el Task*/
 
     }
 
-    public static ProcesoCompra ValidacionPrecio() {
-        return Tasks.instrumented(ProcesoCompra.class);
-    }
+    public static ProcesoCompra ValidacionPrecio() { //Método para crear la tarea correctamente
+
+        return Tasks.instrumented(ProcesoCompra.class); //Crea una versión monitorizada por Serenity (con reportes y screenshots)
+    }/*crear la instancia
+
+inyectar dependencias
+
+nombrar bien la tarea en el reporte
+
+generar capturas por cada step*/
+
+
 
     @Override
     public <T extends Actor> void performAs(T actor)   {

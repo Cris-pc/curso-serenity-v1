@@ -14,14 +14,17 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.thucydides.model.util.EnvironmentVariables;
 import org.openqa.selenium.WebDriver;
 import questions.IsLblVisible;
+import questions.IsMenuVisible;
+import questions.LoginErrorMessage;
+import questions.TxtCompraExitosa;
 import tasks.Login;
-import tasks.ProcesoCompra;
+import tasks.ProcesoCompraFinal;
+
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 
-
-public class FormularioTest3ProceCompra {
-
+public class FormularioTest4ProceCompra {
     @Managed
     WebDriver browser; /*crea y administra automáticamente una instancia de WebDriver (Chrome, Firefox, etc.)
 ✔ Se encarga de inicializar, cerrar y reiniciar el navegador según la configuración de Serenity.
@@ -35,37 +38,28 @@ public class FormularioTest3ProceCompra {
     }
 
 
-
-    @Given("Cris ingresa {string} y {string} y accede a la pagina")
-    public void cris_ingresa_y_y_accede_a_la_pagina(String user, String pass) {
-        EnvironmentVariables environmentVariables = Serenity.environmentVariables(); /*Serenity.environmentVariables() es un helper de Serenity que devuelve el objeto con todas las variables de configuración cargadas en tiempo de ejecución.*/
-        String baseUrl = EnvironmentSpecificConfiguration.from(environmentVariables) /*estas dos líneas obtienen en tiempo de ejecución la URL base configurada en tu proyecto (sin hardcodearla en el código).*/
-                .getProperty("base.url");
+    @Given("Cris ingresa {string} y {string} y accede al home de saucedemo")
+    public void crisIngresaYYAccedeAlHomeDeSaucedemo(String user, String pass) {
+        EnvironmentVariables environmentVariables = Serenity.environmentVariables();
+        String baseUrl = EnvironmentSpecificConfiguration.from(environmentVariables).getProperty("base.url");
         OnStage.theActorInTheSpotlight().attemptsTo(
                 Open.url(baseUrl),
                 Login.satisfactorio(user,pass)
         );
-
     }
-    @When("Se encuentra en el home de la pagina selecciona Backpack y Onesie")
-    public void se_encuentra_en_el_home_de_la_pagina_selecciona_backpack_y_onesie() {
+
+    @When("Se encuentra en el home de la pagina selecciona tres productos y llena el checkout con {string}, {string} y {string}")
+    public void seEncuentraEnElHomeDeLaPaginaSeleccionaTresProductosYLlenaElCheckoutConY(String nombre, String apellido, String code) {
         OnStage.theActorInTheSpotlight().attemptsTo(
-                ProcesoCompra.ValidacionPrecio()
+                ProcesoCompraFinal.ValidacionPrecio(nombre,apellido,code)
         );
-
-
     }
-    @Then("Procedo a verificar que los precios se hayan subido correctamente.")
-    public void procedo_a_verificar_que_los_precios_se_hayan_subido_correctamente() {
+
+    @Then("Procedo a completar el flujo de compra hasta visualizar Thank you for your order!.")
+    public void procedoACompletarElFlujoDeCompraHastaVisualizarThankYouForYourOrder() {
         OnStage.theActorInTheSpotlight().should(
-                seeThat("El label esta visible", IsLblVisible.displayed(),is(true))
-        );
-
+                seeThat("El menú del home está visible", TxtCompraExitosa.displayed(),is(true)));
     }
-
-
-
-
 
 
 }
